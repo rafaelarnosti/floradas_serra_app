@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "862003952997",
+    "project_id": "floradas-da-serra",
+    "storage_bucket": "floradas-da-serra.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862003952997:android:58ebb526b554865399758c",
+        "android_client_info": {
+          "package_name": "com.example.floradas_serra_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862003952997-ha4c1h1bpn97qgkkghla8ru5eb29inmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-WrQDI4Zs5pe36ZTFHmIUJx5MmXmdUag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862003952997-ha4c1h1bpn97qgkkghla8ru5eb29inmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
