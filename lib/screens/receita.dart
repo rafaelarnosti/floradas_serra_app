@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core; // new
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? userCredential;
 
 ApplicationState applicationState = new ApplicationState();
 
@@ -29,6 +32,11 @@ class ReceitasState extends State<Receitas> {
   final _controllerReceita = TextEditingController();
   late PickedFile _imageFile;
   late String _url;
+  @override
+  void initState() {
+    super.initState();
+    userCredential = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,14 +212,28 @@ Future<void> addOrUpdatereceitas(BuildContext context, String titulo,
             ativacao: 'nao'),
         url);
   } else {
-    await applicationState.updateReceita(
-        context,
-        Receita(
-            titulo: titulo,
-            ingredientes: ingredientes,
-            receita: receita,
-            ativacao: 'nao'),
-        IdDoc,
-        url);
+    if (userCredential!.email == 'rlm.arnosti@gmail.com') {
+      await applicationState.updateReceita(
+          context,
+          Receita(
+              titulo: titulo,
+              ingredientes: ingredientes,
+              receita: receita,
+              ativacao: 'sim'),
+          IdDoc,
+          url,
+          userCredential!.email);
+    } else {
+      await applicationState.updateReceita(
+          context,
+          Receita(
+              titulo: titulo,
+              ingredientes: ingredientes,
+              receita: receita,
+              ativacao: 'nao'),
+          IdDoc,
+          url,
+          '');
+    }
   }
 }

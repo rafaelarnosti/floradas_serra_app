@@ -3,12 +3,11 @@ import 'package:floradas_serra_app/util/dbhelper.dart';
 import 'package:flutter/material.dart';
 import 'package:floradas_serra_app/screens/receita.dart';
 import 'package:floradas_serra_app/widget/getReceita.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 ApplicationState applicationState = ApplicationState();
 
-final String choice = 'Ativar Receitas';
-
-const mnuAtivar = 'Ativar Receitas';
+User? userCredential;
 
 class Home extends StatefulWidget {
   @override
@@ -17,6 +16,12 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    userCredential = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {

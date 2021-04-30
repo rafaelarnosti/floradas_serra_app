@@ -3,9 +3,14 @@ import 'package:floradas_serra_app/model/receita.dart';
 import 'package:floradas_serra_app/screens/consultareceita.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? userCredential;
 
 Widget buildReceitaCard(BuildContext context, DocumentSnapshot document) {
   final receita = Receita.fromSnapshot(document);
+
+  userCredential = FirebaseAuth.instance.currentUser;
 
   return new Container(
     child: Card(
@@ -25,6 +30,10 @@ Widget buildReceitaCard(BuildContext context, DocumentSnapshot document) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 20),
                       )),
+                  if (userCredential!.email == 'rlm.arnosti@gmail.com' &&
+                      receita.ativacao == 'nao') ...[
+                    Icon(Icons.verified),
+                  ],
                   Spacer(),
                 ]),
               ),
@@ -33,14 +42,13 @@ Widget buildReceitaCard(BuildContext context, DocumentSnapshot document) {
         ),
         onTap: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ConsultaReceita(
-                      receita: receita,
-                      docId: document.id,
-                      url: document['url'],
-                    )),
-          );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ConsultaReceita(
+                        receita: receita,
+                        docId: document.id,
+                        url: document['url'],
+                      )));
         },
       ),
     ),

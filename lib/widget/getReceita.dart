@@ -2,6 +2,9 @@ import 'package:floradas_serra_app/widget/receitacard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:floradas_serra_app/model/receita.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? userCredential;
 
 class GetReceita extends StatefulWidget {
   @override
@@ -19,6 +22,7 @@ class GetReceitaState extends State<GetReceita> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    userCredential = FirebaseAuth.instance.currentUser;
   }
 
   @override
@@ -58,13 +62,21 @@ class GetReceitaState extends State<GetReceita> {
   }
 
   getReceitas() async {
-    var data = await FirebaseFirestore.instance
-        .collection('receitas')
-        .where('ativacao', isNotEqualTo: 'nao')
-        .get();
-    setState(() {
-      _allResults = data.docs;
-    });
+    if (userCredential!.email == 'rlm.arnosti@gmail.com') {
+      var data = await FirebaseFirestore.instance.collection('receitas').get();
+      setState(() {
+        _allResults = data.docs;
+      });
+    } else {
+      var data = await FirebaseFirestore.instance
+          .collection('receitas')
+          .where('ativacao', isNotEqualTo: 'nao')
+          .get();
+      setState(() {
+        _allResults = data.docs;
+      });
+    }
+
     searchResultsList();
     return "complete";
   }

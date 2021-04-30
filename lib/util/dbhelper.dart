@@ -5,6 +5,10 @@ import 'package:floradas_serra_app/model/receita.dart';
 import 'package:floradas_serra_app/src/widgets.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? userCredential;
+
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
@@ -12,6 +16,7 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp();
+    userCredential = FirebaseAuth.instance.currentUser;
   }
 
   Future<DocumentReference> addReceita(
@@ -49,7 +54,7 @@ class ApplicationState extends ChangeNotifier {
             actions: <Widget>[
               StyledButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: Text(
                   'OK',
@@ -61,10 +66,15 @@ class ApplicationState extends ChangeNotifier {
         });
   }
 
-  Future<void> updateReceita(
-      BuildContext context, Receita receita, String IdDoc, String url) {
-    _showDialog(context, 'Receita em Aprovação',
-        'Sua receita esta em aprovação, assim que ela for aprovada ela irá aparecer na tela de receitas');
+  Future<void> updateReceita(BuildContext context, Receita receita,
+      String IdDoc, String url, String? emailUser) {
+    if (emailUser == 'rlm.arnosti@gmail.com') {
+      _showDialog(context, 'Receita Aprovada', 'Sua receita esta aprovada');
+    } else {
+      _showDialog(context, 'Receita em Aprovação',
+          'Sua receita esta em aprovação, assim que ela for aprovada ela irá aparecer na tela de receitas');
+    }
+
     return FirebaseFirestore.instance.collection('receitas').doc(IdDoc).update({
       'receita': receita.receita,
       'titulo': receita.titulo,
